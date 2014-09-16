@@ -1,0 +1,32 @@
+{
+    "name": "tediscript/perangkum",
+    "type": "library",
+    "description": "PHP library to summarize Indonesian language (Bahasa Indonesia)",
+    "keywords": [
+        "summarize",
+        "indonesian",
+        "bahasa",
+        "indonesia",
+        "perangkum",
+        "rangkum"
+    ],
+    "homepage": "https://github.com/tediscript/perangkum",
+    "authors": [
+        {
+            "name": "Tedi Fibri",
+            "email": "tediscript@gmail.com",
+            "homepage": "http://blog.tediscript.com",
+            "role": "PHP Developer"
+        }
+    ],
+    "require": {
+        "sastrawi/sastrawi": "*"
+    },
+    "autoload": {
+        "psr-0": {
+            "Summarizer\\": "src"
+        }
+    },
+    "license": "MIT",
+    "minimum-stability": "dev"
+}
