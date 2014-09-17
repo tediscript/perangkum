@@ -186,6 +186,9 @@ class Summarizer
 
     /**
      * Segmenting paragraph to array sentences
+     * Pemecahan didasarkan pada tanda baca titik (.), tanda seru (!), dan tanda tanya (?). 
+     * http://thesis.binus.ac.id/doc/Bab3/2010-1-00110-if%20bab%203.pdf 
+     * (di luar tanda kutip)
      * 
      * @param string $paragraph
      * @return array sentences
@@ -199,7 +202,7 @@ class Summarizer
                 continue;
             }
 
-            if (!$this->endsWith($sentence, '.')) {
+            if (!$this->endsWith($sentence, '.') && !$this->endsWith($sentence, '?') && !$this->endsWith($sentence, '!')) {
                 $sentence .= '.';
             }
 
