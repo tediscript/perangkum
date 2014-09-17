@@ -20,7 +20,7 @@
         }
     ],
     "require": {
-        "sastrawi/sastrawi": "*"
+        "sastrawi/sastrawi": "dev-master"
     },
     "autoload": {
         "psr-0": {
