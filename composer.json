@@ -27,6 +27,5 @@
             "Summarizer\\": "src"
         }
     },
-    "license": "MIT",
-    "minimum-stability": "dev"
+    "license": "MIT"
 }
