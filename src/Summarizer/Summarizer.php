@@ -2,6 +2,9 @@
 
 namespace Summarizer;
 
+use Sastrawi\SentenceDetector\SentenceDetectorFactory;
+use Sastrawi\Tokenizer\TokenizerFactory;
+
 /**
  * Summarize main sentences from given paragraph
  *
@@ -26,6 +29,16 @@ class Summarizer
     protected $stopWordRemover;
 
     /**
+     * @var \Sastrawi\SentenceDetector\SentenceDetectorInterface
+     * */
+    protected $sentenceDetector;
+
+    /**
+     * @var \Sastrawi\Tokenizer\DefaultTokenizer
+     * */
+    protected $tokenizer;
+
+    /**
      * Constructor
      *
      * @return void
@@ -37,6 +50,12 @@ class Summarizer
 
         $stopWordRemoverFactory = new \Sastrawi\StopWordRemover\StopWordRemoverFactory();
         $this->StopWordRemover = $stopWordRemoverFactory->createStopWordRemover();
+
+        $sentenceDetectorFactory = new SentenceDetectorFactory();
+        $this->sentenceDetector  = $sentenceDetectorFactory->createSentenceDetector();
+
+        $tokenizerFactory = new TokenizerFactory();
+        $this->tokenizer  = $tokenizerFactory->createDefaultTokenizer();
     }
 
     /**
@@ -127,7 +146,7 @@ class Summarizer
     {
         $wordModus = array();
 
-        $words = explode(' ', $string);
+        $words = $this->tokenize($string);
         foreach ($words as $word) {
             if (is_numeric($word)) {
                 continue;
@@ -186,50 +205,29 @@ class Summarizer
 
     /**
      * Segmenting paragraph to array sentences
-     * Pemecahan didasarkan pada tanda baca titik (.), tanda seru (!), dan tanda tanya (?). 
-     * http://thesis.binus.ac.id/doc/Bab3/2010-1-00110-if%20bab%203.pdf 
-     * (di luar tanda kutip)
+     * Pemecahan menggunakan Sastrawi Sentence Detector.
      * 
      * @param string $paragraph
      * @return array sentences
      */
     protected function segmentingSentence($paragraph)
     {
-        $sentences = array();
-        $arr = array_map('trim', explode('. ', $paragraph));
-        foreach ($arr as $sentence) {
-            if (empty($sentence)) {
-                continue;
-            }
-
-            if (!$this->endsWith($sentence, '.') && !$this->endsWith($sentence, '?') && !$this->endsWith($sentence, '!')) {
-                $sentence .= '.';
-            }
-
-            $sentences[] = $sentence;
-        }
+        $sentences = array_map('trim', $this->sentenceDetector->detect($paragraph));
 
         return $sentences;
     }
 
     /**
-     * Tokenize string
+     * Tokenize string using Sastrawi Tokenizer
      * 
      * @param string $string
      * @return array tokenized string
      */
     protected function tokenize($string = '')
     {
-        $string = strtolower($string);
-        $alphanum = preg_replace('/[^a-z0-9 ]/', '', $string);
+        $tokens = $this->tokenizer->tokenize($string);
 
-        $matches = array();
-        $count = preg_match_all('/\w+/', $alphanum, $matches);
-
-        $val = $count ? $matches[0] : array();
-
-//        return $val;
-        return explode(' ', $string);
+        return $tokens;
     }
 
     /**

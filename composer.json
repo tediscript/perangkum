@@ -20,7 +20,9 @@
         }
     ],
     "require": {
-        "sastrawi/sastrawi": "1.0.*@dev"
+        "sastrawi/sastrawi": "~1",
+        "sastrawi/tokenizer": "0.*",
+        "sastrawi/sentence-detector": "~1"
     },
     "autoload": {
         "psr-0": {
@@ -28,5 +30,6 @@
         }
     },
     "license": "MIT",
-    "minimum-stability": "dev"
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }
